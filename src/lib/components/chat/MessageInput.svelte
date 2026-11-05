@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-    import { onMount, tick } from 'svelte';
 	import type { TerminalContext } from '$lib/types';
 	import {
 		estimateTokens,
