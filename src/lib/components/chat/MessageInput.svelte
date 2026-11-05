@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+    import { onMount, tick } from 'svelte';
 	import type { TerminalContext } from '$lib/types';
 	import {
 		estimateTokens,
@@ -1797,6 +1799,20 @@
 				dropzoneElement.addEventListener('drop', onDrop, true);
 				dropzoneElement.addEventListener('dragleave', onDragLeave);
 			}
+
+			// --- AUTO-SUBMIT MODIFICATION START ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('q');
+            if (queryParam) {
+                prompt = queryParam;
+                await tick();
+                dispatch('submit', prompt);
+
+                const url = new URL(window.location.href);
+                url.searchParams.delete('q');
+                window.history.replaceState({}, document.title, url.pathname + url.search);
+            }
+            // --- AUTO-SUBMIT MODIFICATION END ---
 		};
 		initialize();
 
